@@ -9,7 +9,7 @@ import './App.module.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import getImgs from '../../utilites/fetch';
-import uniqid from 'uniqid';
+import { v4 as uuid } from 'uuid';
 
 class App extends Component {
   state = {
@@ -121,7 +121,7 @@ class App extends Component {
               <ImageGalleryItem
                 src={el.webformatURL}
                 alt={el.tags}
-                key={uniqid()}
+                key={uuid()}
                 id={el.id}
                 onSwitchModal={handleSwitchModal}
               />
