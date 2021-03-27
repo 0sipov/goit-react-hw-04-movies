@@ -1,0 +1,12 @@
+.MovieDescription {
+  display: flex;
+}
+.description {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.poster {
+  max-width: 300px;
+  height: auto;
+}

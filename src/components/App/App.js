@@ -1,6 +1,6 @@
-import React, { lazy } from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Route, Switch } from 'react-router';
-import { NavLink } from 'react-router-dom';
+import Navigation from '../Navigation';
 
 const HomeView = lazy(() =>
   import('../../views/HomeView' /* webpackChunkName: "HomeView" */),
@@ -20,20 +20,15 @@ const NotFoundView = lazy(() =>
 const App = () => {
   return (
     <>
-      <ul>
-        <li>
-          <NavLink to="/">Home</NavLink>
-        </li>
-        <li>
-          <NavLink to="/movies">Movies</NavLink>
-        </li>
-      </ul>
-      <Switch>
-        <Route exact path="/" component={HomeView}></Route>
-        <Route path="/movies/:movieId" component={MovieDetailsView}></Route>
-        <Route path="/movies" component={MoviesView}></Route>
-        <Route component={NotFoundView}></Route>
-      </Switch>
+      <Navigation />
+      <Suspense fallback={<h1>Loading...</h1>}>
+        <Switch>
+          <Route exact path="/" component={HomeView}></Route>
+          <Route path="/movies/:movieId" component={MovieDetailsView}></Route>
+          <Route path="/movies" component={MoviesView}></Route>
+          <Route component={NotFoundView}></Route>
+        </Switch>
+      </Suspense>
     </>
   );
 };
