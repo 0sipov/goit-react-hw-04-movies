@@ -24,4 +24,26 @@ const queryMovieByName = movie => {
   });
 };
 
-export { queryMovieByName, queryMovieById, queryPopularMovies };
+const queryCast = movieId => {
+  return axios({
+    method: 'get',
+    url: `/movie/${movieId}/credits?api_key=${APIKey}`,
+  });
+};
+
+const queryReviews = movieId => {
+  return axios({
+    method: 'get',
+    url: `/movie/${movieId}/reviews?api_key=${APIKey}&page=1`,
+  });
+};
+
+axios.get(`https://api.themoviedb.org/3`);
+
+export {
+  queryMovieByName,
+  queryMovieById,
+  queryPopularMovies,
+  queryCast,
+  queryReviews,
+};

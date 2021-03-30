@@ -1,40 +1,13 @@
-import React, { Component } from 'react';
-import Cast from '../Cast';
-import Reviews from '../Reviews';
+import React, { Component, lazy, Suspense } from 'react';
 import { NavLink, Route } from 'react-router-dom';
-import { queryMovieById } from '../../utilites/queries';
 import styles from './MovieDescription.module.css';
 
+const Cast = lazy(() => import('../Cast' /* webpackChunkName: "Cast" */));
+const Reviews = lazy(() =>
+  import('../Reviews' /* webpackChunkName: "Reviews" */),
+);
+
 class MovieDescription extends Component {
-  state = {
-    movieDetails: {},
-  };
-
-  async componentDidMount() {
-    const response = await queryMovieById(this.props.movieId);
-    const { getYearRelease, getGenresString, getPosterFullSRC } = this;
-    const { data } = response;
-    const yearRelease = getYearRelease(data.release_date);
-    const genresString = getGenresString(data.genres);
-    const fullPosterSRC = getPosterFullSRC(data.poster_path);
-
-    this.setState({
-      movieDetails: {
-        ...data,
-        yearRelease,
-        fullPosterSRC,
-        genresString,
-      },
-    });
-    console.log(response);
-  }
-
-  getYearRelease = dateRelease => dateRelease.slice(0, 4);
-
-  getPosterFullSRC = path => `https://image.tmdb.org/t/p/w500/${path}`;
-
-  getGenresString = genres => genres.map(el => el.name).join(', ');
-
   render() {
     const {
       fullPosterSRC,
@@ -44,7 +17,9 @@ class MovieDescription extends Component {
       overview,
       genresString,
       id,
-    } = this.state.movieDetails;
+    } = this.props.movieDetails;
+
+    const { reviews, cast } = this.props;
 
     return (
       <>
@@ -66,21 +41,25 @@ class MovieDescription extends Component {
           <li>
             <NavLink to={`/movies/${id}/cast`}>Cast</NavLink>
             <br />
-            <Route
-              path={`/movies/${id}/cast`}
-              render={() => {
-                return <Cast movieId={id} />;
-              }}
-            />
+            <Suspense fallback={<h1>Loading...</h1>}>
+              <Route
+                path={`/movies/${id}/cast`}
+                render={() => {
+                  return <Cast cast={cast} />;
+                }}
+              />
+            </Suspense>
           </li>
           <li>
             <NavLink to={`/movies/${id}/reviews`}>Reviews</NavLink>
-            <Route
-              path={`/movies/${id}/reviews`}
-              render={() => {
-                return <Reviews movieId={id} />;
-              }}
-            />
+            <Suspense fallback={<h1>Loading...</h1>}>
+              <Route
+                path={`/movies/${id}/reviews`}
+                render={() => {
+                  return <Reviews reviews={reviews} />;
+                }}
+              />
+            </Suspense>
           </li>
         </ul>
       </>

@@ -8,12 +8,27 @@ class MoviesView extends Component {
     movies: [],
   };
 
+  async componentDidMount() {
+    if (this.props.location.search) {
+      this.handleSubmit(this.props.location.search.slice(7));
+    }
+  }
+
   handleSubmit = async query => {
+    if (query === '') {
+      alert('Enter your query');
+      return;
+    }
     const response = await queryMovieByName(query);
     this.setState({ movies: response.data.results });
+    this.props.history.push({
+      ...this.props.location,
+      search: `query=${query}`,
+    });
   };
 
   render() {
+    console.log(this.props);
     return (
       <>
         <SearchBar onSubmit={this.handleSubmit} />
