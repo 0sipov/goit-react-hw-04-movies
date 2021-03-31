@@ -15,16 +15,20 @@ class MoviesView extends Component {
   }
 
   handleSubmit = async query => {
-    if (query === '') {
-      alert('Enter your query');
-      return;
+    try {
+      if (query === '') {
+        alert('Enter your query');
+        return;
+      }
+      const response = await queryMovieByName(query);
+      this.setState({ movies: response.data.results });
+      this.props.history.push({
+        ...this.props.location,
+        search: `query=${query}`,
+      });
+    } catch (err) {
+      alert('Oops... Something went wrong. Try later.');
     }
-    const response = await queryMovieByName(query);
-    this.setState({ movies: response.data.results });
-    this.props.history.push({
-      ...this.props.location,
-      search: `query=${query}`,
-    });
   };
 
   render() {

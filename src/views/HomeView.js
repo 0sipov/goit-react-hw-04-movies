@@ -8,8 +8,12 @@ class HomeView extends Component {
   };
 
   async componentDidMount() {
-    const responsePopularMovies = await queryPopularMovies();
-    this.setState({ popularMovies: responsePopularMovies.data.results });
+    try {
+      const responsePopularMovies = await queryPopularMovies();
+      this.setState({ popularMovies: responsePopularMovies.data.results });
+    } catch (err) {
+      alert('Oops... Something went wrong. Try later.');
+    }
   }
 
   render() {

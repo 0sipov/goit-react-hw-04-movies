@@ -19,23 +19,33 @@ class MovieDescription extends Component {
       id,
     } = this.props.movieDetails;
 
-    const { reviews, cast } = this.props;
+    const { reviews, cast, onGoBack, previousPage } = this.props;
 
     return (
       <>
+        <button
+          type="button"
+          onClick={() => {
+            return onGoBack(previousPage);
+          }}
+        >
+          Go back
+        </button>
         <h1>Movie description</h1>
         <div className={styles.MovieDescription}>
           <div className={styles.poster}>
             <img src={fullPosterSRC} alt={title} />
           </div>
-          <div className={styles.description}>
-            <h2>{`${title} (${yearRelease})`}</h2>
-            <p>User score: {vote_average * 10}%</p>
-            <h3>Overview</h3>
-            <p>{overview}</p>
-            <h3>Genres</h3>
-            {genresString}
-          </div>
+          {title && (
+            <div className={styles.description}>
+              <h2>{`${title} (${yearRelease})`}</h2>
+              <p>User score: {vote_average * 10}%</p>
+              <h3>Overview</h3>
+              <p>{overview}</p>
+              <h3>Genres</h3>
+              {genresString}
+            </div>
+          )}
         </div>
         <ul>
           <li>

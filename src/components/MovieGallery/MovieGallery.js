@@ -1,13 +1,20 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 
-const MovieGallery = ({ movies }) => {
+const MovieGallery = ({ movies, location }) => {
   return (
     <ul>
       {movies.map(movie => {
         return (
           <li key={movie.id}>
-            <NavLink to={`movies/${movie.id}`}>{movie.title}</NavLink>
+            <NavLink
+              to={{
+                pathname: `movies/${movie.id}`,
+                state: { from: location },
+              }}
+            >
+              {movie.title}
+            </NavLink>
           </li>
         );
       })}
@@ -15,4 +22,4 @@ const MovieGallery = ({ movies }) => {
   );
 };
 
-export default MovieGallery;
+export default withRouter(MovieGallery);
