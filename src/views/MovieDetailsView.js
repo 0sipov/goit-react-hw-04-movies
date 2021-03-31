@@ -39,7 +39,8 @@ class MovieDetailsView extends Component {
     }
   }
 
-  handleGoBack = previousPage => this.props.history.push(previousPage);
+  handleGoBack = previousLocation =>
+    this.props.history.push(previousLocation?.state?.from || '/');
 
   getYearRelease = dateRelease => dateRelease.slice(0, 4);
 
@@ -56,7 +57,7 @@ class MovieDetailsView extends Component {
           reviews={reviews}
           cast={cast}
           onGoBack={this.handleGoBack}
-          previousPage={this.props.location.state.from}
+          previousLocation={this.props.location}
         />
       </>
     );

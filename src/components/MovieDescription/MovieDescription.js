@@ -19,14 +19,14 @@ class MovieDescription extends Component {
       id,
     } = this.props.movieDetails;
 
-    const { reviews, cast, onGoBack, previousPage } = this.props;
+    const { reviews, cast, onGoBack, previousLocation } = this.props;
 
     return (
       <>
         <button
           type="button"
           onClick={() => {
-            return onGoBack(previousPage);
+            return onGoBack(previousLocation);
           }}
         >
           Go back
@@ -49,7 +49,14 @@ class MovieDescription extends Component {
         </div>
         <ul>
           <li>
-            <NavLink to={`/movies/${id}/cast`}>Cast</NavLink>
+            <NavLink
+              to={{
+                pathname: `/movies/${id}/cast`,
+                state: { from: previousLocation?.state?.from || '/' },
+              }}
+            >
+              Cast
+            </NavLink>
             <br />
             <Suspense fallback={<h1>Loading...</h1>}>
               <Route
@@ -61,7 +68,14 @@ class MovieDescription extends Component {
             </Suspense>
           </li>
           <li>
-            <NavLink to={`/movies/${id}/reviews`}>Reviews</NavLink>
+            <NavLink
+              to={{
+                pathname: `/movies/${id}/reviews`,
+                state: { from: previousLocation?.state?.from || '/' },
+              }}
+            >
+              Reviews
+            </NavLink>
             <Suspense fallback={<h1>Loading...</h1>}>
               <Route
                 path={`/movies/${id}/reviews`}
